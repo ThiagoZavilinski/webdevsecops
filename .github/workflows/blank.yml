@@ -1,0 +1,57 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-job:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: |
+        echo "$HTML_CODE" > index.html
+        docker build -t thiagozavilinski/devsecops:latest .
+        docker push thiagozavilinski/devsecops:latest
+
+  test-job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: python3 teste.py
+      - uses: AppThreat/sast-scan-action@master
+        with:
+          type: "html"
+
+  deploy-job:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Deploy to production
+      run: |
+        docker pull thiagozavilinski/devsecops:latest
+        docker run -d -p 8080:80 thiagozavilinski/devsecops:latest
+
+  notify_discord:
+    runs-on: ubuntu-latest
+    needs: [test-job, deploy-job]
+    if: github.event_name == 'pull_request'
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Send notification to Discord
+      run: |
+        curl -X POST -H 'Content-Type: application/json' -d '{"content": "Novo Pull Request foi aberto"}' https://discord.com/api/webhooks/<DISCORD_WEBHOOK_URL>
+      env:
+        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
