@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Página HTML</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #666;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Minha Página HTML</h1>
+    <p>Esta é uma página HTML simples para fins de exemplo.</p>
+    <p>Por favor, insira seu nome de usuário:</p>
+    <form action="#" method="post" id="userForm">
+        <input type="text" name="username" id="username" placeholder="Digite seu usuário" required>
+        <input type="submit" value="Enviar">
+    </form>
+    <div id="welcomeMessage" style="display: none; margin-top: 20px;">
+        <h2>Bem-vindo, <span id="usernameOutput"></span>!</h2>
+    </div>
+</div>
+
+<script>
+    document.getElementById("userForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        var username = document.getElementById("username").value;
+        document.getElementById("usernameOutput").textContent = username;
+        document.getElementById("welcomeMessage").style.display = "block";
+    });
+</script>
+
+</body>
+</html>
