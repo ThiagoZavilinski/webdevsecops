@@ -17,7 +17,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        echo "$HTML_CODE" > index.html
+        echo "$HTML_CODE" > web.html
         docker build -t thiagozavilinski/devsecops:latest .
         docker push thiagozavilinski/devsecops:latest
 
